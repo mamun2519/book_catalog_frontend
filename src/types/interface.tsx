@@ -1,10 +1,10 @@
 export interface IBook {
-  Title: string;
-  Author: string;
+  title: string;
+  author: string;
   genre: string;
-  PublicationDate: string;
+  publicationDate: string;
   url: string;
-  Review: [];
+  Review?: [];
 }
 
 export type LoginFromData = {

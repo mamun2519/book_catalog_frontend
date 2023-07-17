@@ -214,7 +214,7 @@ const Singup = () => {
                     type="submit"
                     className="flex items-center h-12 justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in"
                   >
-                    <span className="mr-2 uppercase">SingIn</span>
+                    <span className="mr-2 uppercase">SingUp</span>
                     <span>
                       <svg
                         className="h-6 w-6"
