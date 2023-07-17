@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React from "react";
@@ -19,7 +20,7 @@ const Singup = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     localStorage.setItem("UserId", data?.data?.userId);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    localStorage.setItem("UserToken", data?.data?.token);
+    localStorage.setItem("UserToken", data?.data?.accessToken);
   }
   const {
     register,

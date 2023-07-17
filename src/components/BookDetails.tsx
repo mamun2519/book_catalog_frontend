@@ -3,17 +3,23 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../layouts/Navbar";
-import { useBookDetailsQuery } from "../redux/features/book/bookApi";
+import {
+  useAddBooCommentMutation,
+  useBookDetailsQuery,
+} from "../redux/features/book/bookApi";
 import { IBook } from "../types/interface";
 import MyModal from "../utils/Modal";
 
 const BookDetails = () => {
   const { id } = useParams();
+  const [commentText, setCommentText] = useState("");
+  console.log(commentText);
   const { data, error, isLoading } = useBookDetailsQuery(id as string, {});
   const book: IBook = data?.data;
   const navigate = useNavigate();
   // eslint-disable-next-line prefer-const
   let [isOpen, setIsOpen] = useState(false);
+  const [addToReview, { data: datas, isSuccess }] = useAddBooCommentMutation();
 
   function closeModal() {
     setIsOpen(false);
@@ -23,7 +29,16 @@ const BookDetails = () => {
     setIsOpen(true);
   }
 
-  console.log(book);
+  const addReview = () => {
+    const userId = localStorage.getItem("UserId");
+    const option = {
+      user: userId,
+      bookId: book?._id,
+      comment: commentText,
+    };
+    void addToReview(option);
+  };
+
   return (
     <div>
       <Navbar />
@@ -160,13 +175,14 @@ const BookDetails = () => {
               <p>Add a review</p>
               <div>
                 <textarea
+                  onChange={(e) => setCommentText(e.target.value)}
                   id="comment"
                   name="comment"
                   className="text-sm sm:text-base placeholder-gray-500 px-5 pr-4 rounded-lg border border-gray-400 w-full h- py-2 focus:outline-none focus:border-blue-400"
                   placeholder="Enter Comment"
                 />
                 <div className=" w-full bg-slate-100 h-7 rounded text-center">
-                  <button>Add Comment</button>
+                  <button onClick={() => addReview()}>Add Comment</button>
                 </div>
               </div>
             </div>

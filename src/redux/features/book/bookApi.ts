@@ -33,6 +33,13 @@ const bookApi = api.injectEndpoints({
       }),
       invalidatesTags: ["deleteBook"],
     }),
+    addBooComment: builder.mutation({
+      query: (data) => ({
+        url: "/books/add-review",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 export const {
@@ -41,4 +48,5 @@ export const {
   useAddBookMutation,
   useEditBookMutation,
   useDeleteBookMutation,
+  useAddBooCommentMutation,
 } = bookApi;

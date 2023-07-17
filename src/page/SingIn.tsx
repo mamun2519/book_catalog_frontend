@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import Navbar from "../layouts/Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginFromData } from "../types/interface";
+import { useSingInMutation } from "../redux/features/auth/authApi";
 
 const SingIn = () => {
   // const location = useLocation()
-  // const from = location.state?.from?.pathname || "/";
+  // const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
+  const [singIn, { data, isSuccess }] = useSingInMutation();
   const {
     register,
     formState: { errors },
@@ -16,7 +19,15 @@ const SingIn = () => {
   } = useForm<LoginFromData>();
   const onSubmit: SubmitHandler<LoginFromData> = (data) => {
     console.log(data);
+    void singIn(data);
   };
+  if (isSuccess) {
+    navigate("/");
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
+    localStorage.setItem("UserId", data?.data?.userId);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
+    localStorage.setItem("UserToken", data?.data?.accessToken);
+  }
   return (
     <>
       <Navbar />

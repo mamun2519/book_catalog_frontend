@@ -1,4 +1,4 @@
-import { SingUpFromData } from "../../../types/interface";
+import { LoginFromData, SingUpFromData } from "../../../types/interface";
 import { api } from "../../api/apiSlice";
 
 const authApi = api.injectEndpoints({
@@ -10,7 +10,14 @@ const authApi = api.injectEndpoints({
         body: data,
       }),
     }),
+    singIn: builder.mutation({
+      query: (data: LoginFromData) => ({
+        url: "/auth/singIn",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useSingUpUserMutation } = authApi;
+export const { useSingUpUserMutation, useSingInMutation } = authApi;
