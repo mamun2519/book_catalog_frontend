@@ -1,24 +1,28 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../layouts/Navbar";
 import { useBookDetailsQuery } from "../redux/features/book/bookApi";
+import { IBook } from "../types/interface";
 
 const BookDetails = () => {
   const { id } = useParams();
   const { data, error, isLoading } = useBookDetailsQuery(id as string);
-  console.log(data);
+  const book: IBook = data?.data;
+  console.log(book);
   return (
     <div>
       <Navbar />
-      <div className="card m-auto  h-96 max-w-7xl border mt-20">
-        <div className=" grid grid-cols-3 pl-24">
-          <div className=" ">
-            <div className="relative px  flex flex-wrap justify-center">
-              <div className="relative max-w-sm min-w-[540px] bg-white shadow-md rounded-3xl p-2 mx-1 my-5 cursor-pointer">
+      <div className="card m-auto  h-[70vh] max-w-7xl border mt-20">
+        <div className=" grid grid-cols-2 ">
+          <div className="">
+            <div className="relative  flex flex-wrap justify-center">
+              <div className="relative h-[50vh] max-w-sm min-w-[540px] bg-white shadow-md rounded-3xl p-2 mx-1 my-5 cursor-pointer">
                 <div className="overflow-x-hidden rounded-2xl relative">
                   <img
-                    className="h-52 rounded-2xl w-full object-cover"
-                    src="https://pixahive.com/wp-content/uploads/2020/10/Gym-shoes-153180-pixahive.jpg"
+                    className="h-64 rounded-2xl w-full object-cover"
+                    src={book?.picture?.url}
                   />
                   <p className="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
                     <svg
@@ -40,9 +44,13 @@ const BookDetails = () => {
                 <div className="mt-4 pl-2 mb-2 flex justify-between ">
                   <div>
                     <p className="text-lg font-semibold text-gray-900 mb-0">
-                      Product Name
+                      {book?.title}
                     </p>
-                    <p className="text-md text-gray-800 mt-0">$340</p>
+                    <p className="text-md text-gray-800 mt-0">{book?.author}</p>
+                    <p className="text-md text-gray-800 mt-0">{book?.genre}</p>
+                    <p className="text-md text-gray-800 mt-0">
+                      {book?.publicationDate}
+                    </p>
                   </div>
                   <div className="flex flex-col-reverse mb-1 mr-4 group cursor-pointer">
                     <svg
@@ -61,17 +69,88 @@ const BookDetails = () => {
                     </svg>
                   </div>
                 </div>
-                <div className=" w-full bg-slate-100 h-7 rounded text-center">
-                  <button>Details</button>
+              </div>
+            </div>
+            <div className=" flex gap-5 px-16">
+              <button className="w-20 bg-slate-100 h-7 rounded text-center px-2">
+                Edit
+              </button>
+              <button className="w-20 bg-slate-100 h-7 rounded text-center px-2">
+                delete
+              </button>
+            </div>
+          </div>
+
+          {/* <div className=" w-12"></div> */}
+          <div className="pt-6 pl-20 pr-5">
+            <div className=" h-96  overflow-y-scroll w-full">
+              <p>Reviews</p>
+              <div className=" flex flex-col gap-4 bg-white pr-5 ">
+                <div className=" border-2 border-b-4 border-gray-200 rounded-xl hover:bg-gray-50">
+                  <div className="grid grid-cols-6 p-5 gap-y-2">
+                    <div>
+                      <img
+                        src="https://picsum.photos/seed/2/200/200"
+                        className="max-w-16 max-h-16 rounded-full"
+                      />
+                    </div>
+
+                    <div className="col-span-5 md:col-span-4 ml-4">
+                      <p className="text-gray-600 font-bold"> Mamun Islam</p>
+
+                      <p className="text-gray-400">Vew Nice </p>
+                    </div>
+
+                    <div className="flex col-start-2 ml-4 md:col-start-auto md:ml-0 md:justify-end">
+                      <p className="rounded-lg text-sky-500 font-bold bg-sky-100  py-1 px-3 text-sm w-fit h-fit">
+                        {" "}
+                        NOW
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className=" flex flex-col gap-4 bg-white  mt-3 pr-5">
+                <div className=" border-2 border-b-4 border-gray-200 rounded-xl hover:bg-gray-50">
+                  <div className="grid grid-cols-6 p-5 gap-y-2">
+                    <div>
+                      <img
+                        src="https://picsum.photos/seed/2/200/200"
+                        className="max-w-16 max-h-16 rounded-full"
+                      />
+                    </div>
+
+                    <div className="col-span-5 md:col-span-4 ml-4">
+                      <p className="text-gray-600 font-bold"> Mamun Islam</p>
+
+                      <p className="text-gray-400">Vew Nice </p>
+                    </div>
+
+                    <div className="flex col-start-2 ml-4 md:col-start-auto md:ml-0 md:justify-end">
+                      <p className="rounded-lg text-sky-500 font-bold bg-sky-100  py-1 px-3 text-sm w-fit h-fit">
+                        {" "}
+                        NOW
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div></div>
-          <div>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus
-            saepe molestias explicabo sit aut, molestiae tempore neque
-            reprehenderit fugit earum.
+
+            <div>
+              <p>Add a review</p>
+              <div>
+                <textarea
+                  id="comment"
+                  name="comment"
+                  className="text-sm sm:text-base placeholder-gray-500 px-5 pr-4 rounded-lg border border-gray-400 w-full h- py-2 focus:outline-none focus:border-blue-400"
+                  placeholder="Enter Comment"
+                />
+                <div className=" w-full bg-slate-100 h-7 rounded text-center">
+                  <button>Add Comment</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
