@@ -1,13 +1,14 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const navigation = [
-    { name: "Dashboard", href: "#", current: true },
-    { name: "Team", href: "#", current: false },
-    { name: "Projects", href: "#", current: false },
-    { name: "Calendar", href: "#", current: false },
+    { name: "Home", to: "/", current: true },
+    { name: "Add Book", to: "/addBook", current: false },
+    { name: "Projects", to: "#", current: false },
+    { name: "Calendar", to: "#", current: false },
   ];
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
@@ -41,9 +42,9 @@ const Navbar = () => {
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
                       {navigation.map((item) => (
-                        <a
+                        <Link
                           key={item.name}
-                          href={item.href}
+                          to={item.to}
                           className={classNames(
                             item.current
                               ? "bg-gray-900 text-white"
@@ -53,12 +54,27 @@ const Navbar = () => {
                           aria-current={item.current ? "page" : undefined}
                         >
                           {item.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <Menu>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link
+                          to="/singIn"
+                          className={classNames(
+                            active ? "bg-gray-700 rounded-md" : "",
+                            "block px-4 py-2 text-sm text-white"
+                          )}
+                        >
+                          Sign In
+                        </Link>
+                      )}
+                    </Menu.Item>
+                  </Menu>
                   <button
                     type="button"
                     className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -79,6 +95,7 @@ const Navbar = () => {
                         />
                       </Menu.Button>
                     </div>
+
                     <Transition
                       as={Fragment}
                       enter="transition ease-out duration-100"
@@ -115,19 +132,6 @@ const Navbar = () => {
                             </a>
                           )}
                         </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
-                              )}
-                            >
-                              Sign out
-                            </a>
-                          )}
-                        </Menu.Item>
                       </Menu.Items>
                     </Transition>
                   </Menu>
@@ -141,7 +145,7 @@ const Navbar = () => {
                   <Disclosure.Button
                     key={item.name}
                     as="a"
-                    href={item.href}
+                    href={item.to}
                     className={classNames(
                       item.current
                         ? "bg-gray-900 text-white"
