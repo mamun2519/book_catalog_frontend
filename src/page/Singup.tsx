@@ -1,15 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React from "react";
 import Navbar from "../layouts/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SingUpFromData } from "../types/interface";
+import { useSingUpUserMutation } from "../redux/features/auth/authApi";
 
 const Singup = () => {
   const navigate = useNavigate();
-  // const location = useLocation()
-  // const from = location.state?.from?.pathname || "/";
-
+  const location = useLocation();
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  const from = location?.state?.from?.pathname || "/";
+  const [SingUp, { isError, isSuccess, data }] = useSingUpUserMutation();
+  console.log(data);
+  if (isSuccess) {
+    navigate("/");
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    localStorage.setItem("UserId", data?.data?.userId);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    localStorage.setItem("UserToken", data?.data?.token);
+  }
   const {
     register,
     formState: { errors },
@@ -17,6 +28,7 @@ const Singup = () => {
   } = useForm<SingUpFromData>();
   const onSubmit: SubmitHandler<SingUpFromData> = (data) => {
     console.log(data);
+    void SingUp(data);
   };
   return (
     <div>

@@ -1,15 +1,28 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../layouts/Navbar";
 import { useBookDetailsQuery } from "../redux/features/book/bookApi";
 import { IBook } from "../types/interface";
+import MyModal from "../utils/Modal";
 
 const BookDetails = () => {
   const { id } = useParams();
-  const { data, error, isLoading } = useBookDetailsQuery(id as string);
+  const { data, error, isLoading } = useBookDetailsQuery(id as string, {});
   const book: IBook = data?.data;
+  const navigate = useNavigate();
+  // eslint-disable-next-line prefer-const
+  let [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
   console.log(book);
   return (
     <div>
@@ -72,10 +85,16 @@ const BookDetails = () => {
               </div>
             </div>
             <div className=" flex gap-5 px-16">
-              <button className="w-20 bg-slate-100 h-7 rounded text-center px-2">
+              <button
+                onClick={() => navigate(`/editBook/${book._id as string}`)}
+                className="w-20 bg-slate-100 h-7 rounded text-center px-2"
+              >
                 Edit
               </button>
-              <button className="w-20 bg-slate-100 h-7 rounded text-center px-2">
+              <button
+                onClick={() => openModal()}
+                className="w-20 bg-slate-100 h-7 rounded text-center px-2"
+              >
                 delete
               </button>
             </div>
@@ -154,7 +173,15 @@ const BookDetails = () => {
           </div>
         </div>
       </div>
-      {id}
+      {isOpen && (
+        <MyModal
+          id={book?._id}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          closeModal={closeModal}
+          openModal={openModal}
+        ></MyModal>
+      )}
     </div>
   );
 };
