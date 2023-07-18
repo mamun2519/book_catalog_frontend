@@ -1,11 +1,28 @@
 import React from "react";
 import { IBook } from "../types/interface";
 import { useNavigate } from "react-router-dom";
+import { useAddWishlistMutation } from "../redux/features/wishlist/wishlistApi";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 interface IProps {
   book: IBook;
 }
 const Book = ({ book }: IProps) => {
+  const [addWishList, { data, isSuccess, isError }] = useAddWishlistMutation();
+  console.log(isSuccess, isError);
   const navigate = useNavigate();
+  if (isSuccess) {
+    toast.success("Wishlist Add Successfully");
+  }
+
+  const addWishlistHandler = () => {
+    const userId = localStorage.getItem("UserId");
+    const options = {
+      user: userId,
+      book: book?._id,
+    };
+    void addWishList(options);
+  };
   return (
     <div className="">
       <div className="relative mx-3 flex flex-wrap justify-center">
@@ -15,22 +32,6 @@ const Book = ({ book }: IProps) => {
               className="h-40 rounded-2xl w-full object-cover"
               src={book?.picture?.url}
             />
-            <p className="absolute right-2 top-2 bg-white rounded-full p-2 cursor-pointer group">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 group-hover:opacity-50 opacity-70"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="black"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-            </p>
           </div>
           <div className="mt-4 pl-2 mb-2 flex justify-between ">
             <div>
@@ -39,7 +40,11 @@ const Book = ({ book }: IProps) => {
               </p>
               <p className="text-md text-gray-800 mt-0">{book?.author}</p>
             </div>
-            <div className="flex flex-col-reverse mb-1 mr-4 group cursor-pointer">
+            <div
+              onClick={() => addWishlistHandler()}
+              className="flex flex-col-reverse mb-1 mr-4 group cursor-pointer tooltip"
+              data-tip="Wishlist"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 group-hover:opacity-70"
@@ -56,13 +61,13 @@ const Book = ({ book }: IProps) => {
               </svg>
             </div>
           </div>
-          <div className=" w-full bg-slate-100 h-7 rounded text-center">
-            <button
-              onClick={() => navigate(`/bookDetails/${book._id as string}`)}
-            >
-              Details
-            </button>
+          <div
+            onClick={() => navigate(`/bookDetails/${book._id as string}`)}
+            className=" w-full bg-slate-100 text-gray-900  font-medium h-8 text-center flex justify-center items-center mt-2 rounded-2xl"
+          >
+            <button className=" ">Details</button>
           </div>
+          <ToastContainer />
         </div>
       </div>
     </div>

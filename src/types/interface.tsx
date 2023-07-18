@@ -33,3 +33,9 @@ export type Reviews = {
   comment: string;
   _id: string;
 };
+
+export type wishList = {
+  _id: string;
+  book: IBook;
+  user: string;
+};

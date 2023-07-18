@@ -2,6 +2,7 @@
 import Book from "./Book";
 import { useGetALLBookQuery } from "../redux/features/book/bookApi";
 import { IBook } from "../types/interface";
+import Spinner from "../utils/Spinner";
 
 const Books = () => {
   // const [books, setBooks] = useState([]);
@@ -18,15 +19,18 @@ const Books = () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const book: IBook[] = data?.data;
 
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
-    <div className="  flex m-auto  max-w-7xl gap-5 mt-10">
+    <div className="  lg:flex m-auto  max-w-7xl gap-5 mt-10">
       <div className="w-36">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Non voluptas
-        laboriosam, illo soluta repellat vero animi. Quod voluptatum quia
-        labore.
+        <div className="mt-5">
+          <h1>Filter Book</h1>
+        </div>
       </div>
       <div className=" flex-1 w-full">
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid lg:grid-cols-4  grid-cols-1 gap-5">
           {book?.map((book: IBook) => (
             <Book key={book._id} book={book}></Book>
           ))}

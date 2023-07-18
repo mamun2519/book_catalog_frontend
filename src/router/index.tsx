@@ -5,6 +5,7 @@ import AddBook from "../page/AddBook";
 import Singup from "../page/Singup";
 import BookDetails from "../components/BookDetails";
 import EditBook from "../page/EditBook";
+import WishList from "../page/WishList";
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/singIn", element: <SingIn /> },
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
   { path: "/addBook", element: <AddBook /> },
   { path: "/bookDetails/:id", element: <BookDetails /> },
   { path: "/editBook/:id", element: <EditBook /> },
+  { path: "/wishList", element: <WishList /> },
 ]);
 
 export default router;
