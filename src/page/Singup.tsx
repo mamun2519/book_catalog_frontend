@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import Navbar from "../layouts/Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -11,6 +11,7 @@ import { useSingUpUserMutation } from "../redux/features/auth/authApi";
 const Singup = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [productPicture, setProductPicture] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
   const from = location?.state?.from?.pathname || "/";
   const [SingUp, { isError, isSuccess, data }] = useSingUpUserMutation();
@@ -28,8 +29,23 @@ const Singup = () => {
     handleSubmit,
   } = useForm<SingUpFromData>();
   const onSubmit: SubmitHandler<SingUpFromData> = (data) => {
+    const options: SingUpFromData = {
+      ...data,
+      picture: {
+        url: productPicture,
+      },
+    };
     console.log(data);
-    void SingUp(data);
+    void SingUp(options);
+  };
+  const productPictureHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setProductPicture(reader.result as string);
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
   };
   return (
     <div>
@@ -48,9 +64,23 @@ const Singup = () => {
                   </label>
                   <div className="">
                     <input
+                      {...register("picture", {
+                        required: {
+                          value: true,
+                          message: "picture is Required",
+                        },
+                      })}
+                      onChange={(e) => productPictureHandler(e)}
                       type="file"
                       className="file-input file-input-bordered  text-sm sm:text-base placeholder-gray-500   rounded-lg border border-gray-400 w-full  focus:outline-none focus:border-blue-400"
                     />
+                    <label className="label">
+                      {errors.picture?.type === "required" && (
+                        <span className="text-red-500">
+                          {errors.picture.message}
+                        </span>
+                      )}
+                    </label>
                   </div>
                 </div>
                 <div className="flex flex-col mb-6">

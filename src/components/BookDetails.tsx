@@ -7,14 +7,18 @@ import {
   useAddBooCommentMutation,
   useBookDetailsQuery,
 } from "../redux/features/book/bookApi";
-import { IBook } from "../types/interface";
+import { IBook, Reviews } from "../types/interface";
 import MyModal from "../utils/Modal";
+import { toast } from "react-hot-toast";
 
 const BookDetails = () => {
   const { id } = useParams();
   const [commentText, setCommentText] = useState("");
   console.log(commentText);
-  const { data, error, isLoading } = useBookDetailsQuery(id as string, {});
+  const { data, error, isLoading } = useBookDetailsQuery(id as string, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 30000,
+  });
   const book: IBook = data?.data;
   const navigate = useNavigate();
   // eslint-disable-next-line prefer-const
@@ -25,9 +29,14 @@ const BookDetails = () => {
     setIsOpen(false);
   }
 
+  if (isSuccess) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    toast.success(datas?.message);
+  }
   function openModal() {
     setIsOpen(true);
   }
+  console.log(data);
 
   const addReview = () => {
     const userId = localStorage.getItem("UserId");
@@ -119,55 +128,40 @@ const BookDetails = () => {
           <div className="pt-6 pl-20 pr-5">
             <div className=" h-96  overflow-y-scroll w-full">
               <p>Reviews</p>
-              <div className=" flex flex-col gap-4 bg-white pr-5 ">
-                <div className=" border-2 border-b-4 border-gray-200 rounded-xl hover:bg-gray-50">
-                  <div className="grid grid-cols-6 p-5 gap-y-2">
-                    <div>
-                      <img
-                        src="https://picsum.photos/seed/2/200/200"
-                        className="max-w-16 max-h-16 rounded-full"
-                      />
-                    </div>
 
-                    <div className="col-span-5 md:col-span-4 ml-4">
-                      <p className="text-gray-600 font-bold"> Mamun Islam</p>
+              <div>
+                {book?.reviews?.map((review: Reviews) => (
+                  <div
+                    key={review?._id}
+                    className=" flex flex-col gap-4 bg-white  mt-3 pr-5"
+                  >
+                    <div className=" border-2 border-b-4 border-gray-200 rounded-xl hover:bg-gray-50">
+                      <div className="grid grid-cols-6 p-5 gap-y-2">
+                        <div>
+                          <img
+                            src={review?.user?.avatar}
+                            className="max-w-16 max-h-16 rounded-full"
+                          />
+                        </div>
 
-                      <p className="text-gray-400">Vew Nice </p>
-                    </div>
+                        <div className="col-span-5 md:col-span-4 ml-4">
+                          <p className="text-gray-600 font-bold">
+                            {review?.user?.name}
+                          </p>
 
-                    <div className="flex col-start-2 ml-4 md:col-start-auto md:ml-0 md:justify-end">
-                      <p className="rounded-lg text-sky-500 font-bold bg-sky-100  py-1 px-3 text-sm w-fit h-fit">
-                        {" "}
-                        NOW
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className=" flex flex-col gap-4 bg-white  mt-3 pr-5">
-                <div className=" border-2 border-b-4 border-gray-200 rounded-xl hover:bg-gray-50">
-                  <div className="grid grid-cols-6 p-5 gap-y-2">
-                    <div>
-                      <img
-                        src="https://picsum.photos/seed/2/200/200"
-                        className="max-w-16 max-h-16 rounded-full"
-                      />
-                    </div>
+                          <p className="text-gray-400">{review?.comment} </p>
+                        </div>
 
-                    <div className="col-span-5 md:col-span-4 ml-4">
-                      <p className="text-gray-600 font-bold"> Mamun Islam</p>
-
-                      <p className="text-gray-400">Vew Nice </p>
-                    </div>
-
-                    <div className="flex col-start-2 ml-4 md:col-start-auto md:ml-0 md:justify-end">
-                      <p className="rounded-lg text-sky-500 font-bold bg-sky-100  py-1 px-3 text-sm w-fit h-fit">
-                        {" "}
-                        NOW
-                      </p>
+                        <div className="flex col-start-2 ml-4 md:col-start-auto md:ml-0 md:justify-end">
+                          <p className="rounded-lg text-sky-500 font-bold bg-sky-100  py-1 px-3 text-sm w-fit h-fit">
+                            {" "}
+                            NOW
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
 

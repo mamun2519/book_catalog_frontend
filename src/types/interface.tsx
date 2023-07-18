@@ -7,7 +7,7 @@ export interface IBook {
   picture: {
     url: string;
   };
-  Review?: [];
+  reviews?: [];
 }
 
 export type LoginFromData = {
@@ -19,4 +19,17 @@ export type SingUpFromData = {
   name: string;
   email: string;
   password: number;
+  picture: {
+    url: string;
+  };
+};
+
+export type Reviews = {
+  user: {
+    name: string;
+    email: string;
+    avatar: string;
+  };
+  comment: string;
+  _id: string;
 };

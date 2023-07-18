@@ -1,7 +1,9 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/hook/hook";
+import { singOut } from "../redux/features/auth/authSlice";
 
 const Navbar = () => {
   const navigation = [
@@ -13,6 +15,9 @@ const Navbar = () => {
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
   }
+  const { user } = useAppSelector((state) => state.auth);
+  const disPatch = useAppDispatch();
+
   return (
     <div>
       <Disclosure as="nav" className="bg-gray-800">
@@ -61,19 +66,37 @@ const Navbar = () => {
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <Menu>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <Link
-                          to="/singIn"
-                          className={classNames(
-                            active ? "bg-gray-700 rounded-md" : "",
-                            "block px-4 py-2 text-sm text-white"
-                          )}
-                        >
-                          Sign In
-                        </Link>
-                      )}
-                    </Menu.Item>
+                    {user ? (
+                      <Menu.Item>
+                        {({ active }) => (
+                          <button
+                            onClick={() => disPatch(singOut())}
+                            className={classNames(
+                              active
+                                ? "bg-gray-700 rounded-md  cursor-pointer"
+                                : "",
+                              "block px-4 py-2 text-sm text-white"
+                            )}
+                          >
+                            SingOut
+                          </button>
+                        )}
+                      </Menu.Item>
+                    ) : (
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link
+                            to="/singIn"
+                            className={classNames(
+                              active ? "bg-gray-700 rounded-md" : "",
+                              "block px-4 py-2 text-sm text-white"
+                            )}
+                          >
+                            Sign In
+                          </Link>
+                        )}
+                      </Menu.Item>
+                    )}
                   </Menu>
                   <button
                     type="button"

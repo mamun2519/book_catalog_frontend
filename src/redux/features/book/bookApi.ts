@@ -9,7 +9,7 @@ const bookApi = api.injectEndpoints({
     }),
     bookDetails: builder.query({
       query: (id: string) => `/books/${id}`,
-      providesTags: ["deleteBook"],
+      providesTags: ["deleteBook", "review"],
     }),
     addBook: builder.mutation({
       query: (data: IBook) => ({
@@ -39,6 +39,7 @@ const bookApi = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["review"],
     }),
   }),
 });
