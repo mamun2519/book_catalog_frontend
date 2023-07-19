@@ -11,9 +11,9 @@ import Navbar from "../layouts/Navbar";
 import { readList, wishList } from "../types/interface";
 
 const ReadList = () => {
-  const [user, setUser] = useState("");
   const [readCheck, setReadCheck] = useState(false);
   const [completeCheck, setCompleteCheck] = useState(false);
+  const [readSoon, setReadSoon] = useState(false);
 
   const { data, isLoading, isSuccess } = useGetALLreadListQuery(undefined, {
     refetchOnMountOrArgChange: true,
@@ -48,6 +48,17 @@ const ReadList = () => {
     void updateReadList(options);
   };
 
+  const readSoonHandler = (id: string) => {
+    setReadSoon(!readSoon);
+    const options = {
+      id: id,
+      data: {
+        readSoon: readSoon,
+      },
+    };
+    void updateReadList(options);
+  };
+
   const completeListChangeHandler = (id: string) => {
     setCompleteCheck(!completeCheck);
     const options = {
@@ -64,9 +75,9 @@ const ReadList = () => {
     <div>
       <Navbar />
       <div className="px-4">
-        <div className="mt-20 mx-auto h-[60vh] border lg:w-[50vw] rounded">
+        <div className="mt-20 mx-auto h-[70vh] border lg:w-[60vw] rounded">
           <div className="pt-6 lg:pl-20 lg:pr-5 px-4">
-            <div className=" h-[57vh]  overflow-y-scroll w-full">
+            <div className=" h-[65vh]  overflow-y-scroll w-full">
               <p>Read List</p>
               <div>
                 {data?.data !== null &&
@@ -105,10 +116,10 @@ const ReadList = () => {
                                     className="checkbox "
                                     checked={review?.reading}
                                     onClick={() =>
-                                      readListChangeHendler(review._id)
+                                      readListChangeHendler(review?._id)
                                     }
                                   />
-                                  <span>Reading</span>
+                                  <span>Read Soon</span>
                                 </div>
                               </div>
                               <div className="mt-1">
@@ -121,7 +132,18 @@ const ReadList = () => {
                                       completeListChangeHandler(review?._id)
                                     }
                                   />
-                                  <span>Complete</span>
+                                  <span>currently reading</span>
+                                </div>
+                              </div>
+                              <div className="mt-1">
+                                <div className=" flex items-center gap-2">
+                                  <input
+                                    type="checkbox"
+                                    className="checkbox "
+                                    checked={review?.readSoon}
+                                    onClick={() => readSoonHandler(review?._id)}
+                                  />
+                                  <span>finished reading</span>
                                 </div>
                               </div>
                             </div>

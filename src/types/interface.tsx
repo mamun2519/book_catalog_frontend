@@ -46,4 +46,5 @@ export type readList = {
   user: string;
   reading: boolean;
   complete: boolean;
+  readSoon: boolean;
 };
