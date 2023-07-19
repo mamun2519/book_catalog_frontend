@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
@@ -6,12 +8,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginFromData } from "../types/interface";
 import { useSingInMutation } from "../redux/features/auth/authApi";
+import Spinner from "../utils/Spinner";
 
 const SingIn = () => {
-  // const location = useLocation()
-  // const from = location?.state?.from?.pathname || "/";
+  const location = useLocation();
+  const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  const [singIn, { data, isSuccess }] = useSingInMutation();
+  const [singIn, { data, isSuccess, isLoading }] = useSingInMutation();
   const {
     register,
     formState: { errors },
@@ -27,6 +30,9 @@ const SingIn = () => {
     localStorage.setItem("UserId", data?.data?.userId);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
     localStorage.setItem("UserToken", data?.data?.accessToken);
+  }
+  if (isLoading) {
+    return <Spinner />;
   }
   return (
     <>

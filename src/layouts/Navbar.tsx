@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook/hook";
 import { singOut } from "../redux/features/auth/authSlice";
 import { useGetALLWishListQuery } from "../redux/features/wishlist/wishlistApi";
+import { AiFillRead } from "react-icons/ai";
 
 const Navbar = () => {
   const navigation = [
@@ -18,13 +19,13 @@ const Navbar = () => {
   }
   const { user } = useAppSelector((state) => state.auth);
   const disPatch = useAppDispatch();
-  const { data, isLoading, isSuccess } = useGetALLWishListQuery(
-    user as string,
-    {
-      refetchOnMountOrArgChange: true,
-      pollingInterval: 30000,
-    }
-  );
+  // const { data, isLoading, isSuccess } = useGetALLWishListQuery(
+  //   user as string,
+  //   {
+  //     refetchOnMountOrArgChange: true,
+  //     pollingInterval: 30000,
+  //   }
+  // );
 
   return (
     <div className="h-32 bg-gray-800 ">
@@ -118,7 +119,16 @@ const Navbar = () => {
                       className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                     >
                       <span className="sr-only">View notifications</span>
-                      <div className="  relative h-8">
+
+                      <div className="  relative h-8  flex gap-5">
+                        <Link
+                          to="/readList"
+                          className="h-6 w-6 group-hover:opacity-70  mt-"
+                        >
+                          <span className=" text-3xl">
+                            <AiFillRead />
+                          </span>
+                        </Link>
                         <Link
                           to="/wishList"
                           // onClick={() => addWishlistHandler()}

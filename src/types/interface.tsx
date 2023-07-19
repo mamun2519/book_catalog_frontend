@@ -39,3 +39,11 @@ export type wishList = {
   book: IBook;
   user: string;
 };
+
+export type readList = {
+  _id: string;
+  book: IBook;
+  user: string;
+  reading: boolean;
+  complete: boolean;
+};

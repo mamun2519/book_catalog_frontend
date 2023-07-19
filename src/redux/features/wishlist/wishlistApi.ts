@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { IBook } from "../../../types/interface";
 import { api } from "../../api/apiSlice";
@@ -5,7 +6,8 @@ import { api } from "../../api/apiSlice";
 const wishlistApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getALLWishList: builder.query({
-      query: (id: string) => `/wishlist/${id}`,
+      query: () => `/wishlist`,
+
       providesTags: ["wishList"],
     }),
 
