@@ -16,7 +16,7 @@ export const authSlice = createSlice({
   reducers: {
     singOut: (state) => {
       localStorage.removeItem("UserId");
-      localStorage.removeItem("userToken");
+      localStorage.removeItem("UserToken");
       state.user = null;
       state.token = null;
     },

@@ -8,10 +8,12 @@ import EditBook from "../page/EditBook";
 import WishList from "../page/WishList";
 import PrivateRoute from "./PrivateRoute";
 import ReadList from "../page/ReadList";
+import BookPage from "../page/BookPage";
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/singIn", element: <SingIn /> },
   { path: "/singUp", element: <Singup /> },
+  { path: "/allBook", element: <BookPage /> },
   {
     path: "/addBook",
     element: (

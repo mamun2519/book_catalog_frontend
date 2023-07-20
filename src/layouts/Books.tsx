@@ -5,12 +5,6 @@ import { IBook } from "../types/interface";
 import Spinner from "../utils/Spinner";
 
 const Books = () => {
-  // const [books, setBooks] = useState([]);
-  // useEffect(() => {
-  //   void fetch("/public/data.json")
-  //     .then((res) => res.json())
-  //     .then((data) => setBooks(data));
-  // }, []);
   const { data, error, isLoading } = useGetALLBookQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
@@ -24,9 +18,31 @@ const Books = () => {
   }
   return (
     <div className="  lg:flex m-auto  max-w-7xl gap-5 mt-10">
-      <div className="w-36">
+      <div className="w-50">
         <div className="mt-5">
           <h1>Filter Book</h1>
+          <div className="mt-2">
+            <div className=" flex items-center gap-2">
+              <input
+                type="checkbox"
+                className="checkbox "
+                // checked={review?.readSoon}
+                // onClick={() => readSoonHandler(review?._id)}
+              />
+              <span>genre</span>
+            </div>
+          </div>
+          <div className="mt-2">
+            <div className=" flex items-center gap-2">
+              <input
+                type="checkbox"
+                className="checkbox "
+                // checked={review?.readSoon}
+                // onClick={() => readSoonHandler(review?._id)}
+              />
+              <span>publication year.</span>
+            </div>
+          </div>
         </div>
       </div>
       <div className=" flex-1 w-full">

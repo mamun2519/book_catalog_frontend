@@ -6,10 +6,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { AiFillRead } from "react-icons/ai";
 import { useAddReadlistMutation } from "../redux/features/readList/readList";
+import { useAppSelector } from "../redux/hook/hook";
 interface IProps {
   book: IBook;
 }
 const Book = ({ book }: IProps) => {
+  const { user } = useAppSelector((state) => state.auth);
+
   const [addWishList, { isSuccess, isError }] = useAddWishlistMutation();
   const [addReadList, { isSuccess: success }] = useAddReadlistMutation();
   console.log(isSuccess, isError);
@@ -23,20 +26,28 @@ const Book = ({ book }: IProps) => {
   console.log(success);
 
   const addWishlistHandler = () => {
-    const userId = localStorage.getItem("UserId");
-    const options = {
-      user: userId,
-      book: book?._id,
-    };
-    void addWishList(options);
+    if (!user) {
+      toast.error("Please you need to first Login");
+    } else {
+      const userId = localStorage.getItem("UserId");
+      const options = {
+        user: userId,
+        book: book?._id,
+      };
+      void addWishList(options);
+    }
   };
   const addReadlistHandler = () => {
-    const userId = localStorage.getItem("UserId");
-    const options = {
-      user: userId,
-      book: book?._id,
-    };
-    void addReadList(options);
+    if (!user) {
+      toast.error("Please you need to first login");
+    } else {
+      const userId = localStorage.getItem("UserId");
+      const options = {
+        user: userId,
+        book: book?._id,
+      };
+      void addReadList(options);
+    }
   };
   return (
     <div className="">
@@ -54,6 +65,10 @@ const Book = ({ book }: IProps) => {
                 {book?.title}
               </p>
               <p className="text-md text-gray-800 mt-0">{book?.author}</p>
+              <p className="text-md text-gray-800 mt-0">{book?.genre}</p>
+              <p className="text-md text-gray-800 mt-0">
+                {book?.publicationDate}
+              </p>
             </div>
             <div className="flex  mb-1 mr-4 group cursor-pointer  gap-2">
               <div

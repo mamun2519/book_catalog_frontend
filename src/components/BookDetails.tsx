@@ -170,8 +170,11 @@ const BookDetails = () => {
                     className="text-sm sm:text-base placeholder-gray-500 px-5 pr-4 rounded-lg border border-gray-400 w-full h- py-2 focus:outline-none focus:border-blue-400"
                     placeholder="Enter Comment"
                   />
-                  <div className=" w-full bg-slate-100 h-10 text-center rounded-2xl flex  justify-center items-center">
-                    <button onClick={() => addReview()}>Add Comment</button>
+                  <div
+                    onClick={() => addReview()}
+                    className=" w-full bg-slate-100 h-10 text-center rounded-2xl flex  justify-center items-center"
+                  >
+                    <button>Add Comment</button>
                   </div>
                 </div>
               </div>

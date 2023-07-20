@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SingUpFromData } from "../types/interface";
 import { useSingUpUserMutation } from "../redux/features/auth/authApi";
+import Spinner from "../utils/Spinner";
 
 const Singup = () => {
   const navigate = useNavigate();
@@ -14,7 +15,8 @@ const Singup = () => {
   const [productPicture, setProductPicture] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
   const from = location?.state?.from?.pathname || "/";
-  const [SingUp, { isError, isSuccess, data }] = useSingUpUserMutation();
+  const [SingUp, { isError, isSuccess, data, isLoading }] =
+    useSingUpUserMutation();
   console.log(data);
   if (isSuccess) {
     navigate("/");
@@ -47,6 +49,10 @@ const Singup = () => {
     };
     reader.readAsDataURL(e.target.files[0]);
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <div>
       <>

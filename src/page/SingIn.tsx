@@ -14,7 +14,9 @@ const SingIn = () => {
   const location = useLocation();
   const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
-  const [singIn, { data, isSuccess, isLoading }] = useSingInMutation();
+  const [singIn, { data, isSuccess, isLoading, isError }] = useSingInMutation();
+  console.log("is eror", isError);
+  console.log(data);
   const {
     register,
     formState: { errors },
