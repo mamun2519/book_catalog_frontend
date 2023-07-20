@@ -6,7 +6,7 @@ export const api = createApi({
   reducerPath: "api",
   tagTypes: ["deleteBook", "review", "wishList", "readList", "updateList"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/v1",
+    baseUrl: "https://book-cetalog.vercel.app/api/v1",
     prepareHeaders: (headers, { getState }) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const token = (getState() as RootState).auth.token;
