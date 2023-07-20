@@ -8,6 +8,7 @@ export interface IBook {
     url: string;
   };
   reviews?: [];
+  userId: string | null;
 }
 
 export type LoginFromData = {

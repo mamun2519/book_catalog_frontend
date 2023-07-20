@@ -4,15 +4,13 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import Navbar from "../layouts/Navbar";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginFromData } from "../types/interface";
 import { useSingInMutation } from "../redux/features/auth/authApi";
 import Spinner from "../utils/Spinner";
 
 const SingIn = () => {
-  const location = useLocation();
-  const from = location?.state?.from?.pathname || "/";
   const navigate = useNavigate();
   const [singIn, { data, isSuccess, isLoading, isError }] = useSingInMutation();
   console.log("is eror", isError);

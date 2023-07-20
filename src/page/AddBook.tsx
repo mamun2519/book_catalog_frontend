@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useNavigate } from "react-router-dom";
+
 import Navbar from "../layouts/Navbar";
 import { IBook } from "../types/interface";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ChangeEvent, useState } from "react";
 import { useAddBookMutation } from "../redux/features/book/bookApi";
+import { ToastContainer, toast } from "react-toastify";
+import { useAppSelector } from "../redux/hook/hook";
 
 const AddBook = () => {
-  const navigate = useNavigate();
   const [productPicture, setProductPicture] = useState("");
-  const [addBook, { isLoading, isError, isSuccess }] = useAddBookMutation();
+  const [addBook, { isSuccess }] = useAddBookMutation();
+  const { user } = useAppSelector((state) => state.auth);
 
-  console.log("error", isError);
-  console.log("success", isSuccess);
   const {
     register,
     formState: { errors },
@@ -24,20 +24,35 @@ const AddBook = () => {
       picture: {
         url: productPicture,
       },
+      userId: user,
     };
     void addBook(options);
     console.log(data);
   };
   const productPictureHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target?.files;
+
+    if (!files || files.length === 0) {
+      // No file selected, handle the error or provide feedback to the user.
+      return;
+    }
+
+    const selectedFile = files[0];
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
         setProductPicture(reader.result as string);
       }
     };
-    reader.readAsDataURL(e.target.files[0]);
+    // reader.readAsDataURL(e.target?.files[0] );
+    reader.readAsDataURL(selectedFile);
   };
 
+  if (isSuccess) {
+    toast.success("book add successfully");
+  }
+
+  console.log(isSuccess);
   return (
     <>
       <Navbar />
@@ -243,6 +258,7 @@ const AddBook = () => {
                       <path d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </span>
+                  <ToastContainer />
                 </button>
               </div>
             </form>

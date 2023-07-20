@@ -1,15 +1,14 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook/hook";
 import { singOut } from "../redux/features/auth/authSlice";
-import { useGetALLWishListQuery } from "../redux/features/wishlist/wishlistApi";
+
 import { AiFillRead } from "react-icons/ai";
-import { useGetALLBookQuery } from "../redux/features/book/bookApi";
 
 const Navbar = () => {
-  const [searchText, setSearchText] = useState("");
+  // const [searchText, setSearchText] = useState("");
   // const { data, error, isLoading } = useGetALLBookQuery(searchText, {
   //   refetchOnMountOrArgChange: true,
   //   pollingInterval: 30000,
@@ -240,7 +239,6 @@ const Navbar = () => {
 
         <div>
           <input
-            onChange={(e) => setSearchText(e.target.value)}
             id="email"
             type="text"
             className="text-sm h-10 sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"

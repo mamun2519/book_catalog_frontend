@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { useState } from "react";
 import {
   useDeleteWishListMutation,
   useGetALLWishListQuery,
 } from "../redux/features/wishlist/wishlistApi";
 import Navbar from "../layouts/Navbar";
-import { useAppSelector } from "../redux/hook/hook";
+
 import { ToastContainer, toast } from "react-toastify";
 import { wishList } from "../types/interface";
 import Spinner from "../utils/Spinner";
@@ -12,16 +13,16 @@ import Spinner from "../utils/Spinner";
 const WishList = () => {
   // const { user } = useAppSelector((state) => state.auth);
   // console.log(user);
-  const [user, setUser] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [user] = useState("");
 
   console.log(user);
-  const { data, isLoading, isSuccess } = useGetALLWishListQuery(undefined, {
+  const { data, isLoading } = useGetALLWishListQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
   });
 
-  const [deleteWishList, { isSuccess: success, isError }] =
-    useDeleteWishListMutation();
+  const [deleteWishList, { isSuccess: success }] = useDeleteWishListMutation();
 
   const wishListDeleteHandler = (id: string) => {
     void deleteWishList(id);
@@ -32,7 +33,7 @@ const WishList = () => {
   if (success) {
     toast.success("Delete successfully");
   }
-  console.log(data);
+
   return (
     <div>
       <Navbar />

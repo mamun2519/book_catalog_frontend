@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React from "react";
+
 import { useGetALLBookQuery } from "../redux/features/book/bookApi";
 import { IBook } from "../types/interface";
 import Spinner from "../utils/Spinner";
@@ -7,7 +7,7 @@ import Book from "../layouts/Book";
 import Navbar from "../layouts/Navbar";
 
 const BookPage = () => {
-  const { data, error, isLoading } = useGetALLBookQuery(undefined, {
+  const { data, isLoading } = useGetALLBookQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
   });

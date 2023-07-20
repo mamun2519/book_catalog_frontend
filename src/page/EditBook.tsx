@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React, { ChangeEvent, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../layouts/Navbar";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -13,14 +12,13 @@ import {
 
 const EditBook = () => {
   const { id } = useParams();
-  const [productPicture, setProductPicture] = useState(null);
-  console.log(productPicture);
-  const { data, error } = useBookDetailsQuery(id as string, {
+
+  const { data } = useBookDetailsQuery(id as string, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
   });
   const book: IBook = data?.data;
-  const [editBook, { isLoading, isError, isSuccess }] = useEditBookMutation();
+  const [editBook, { isError, isSuccess }] = useEditBookMutation();
 
   console.log("error", isError);
   console.log("success", isSuccess);

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../layouts/Navbar";
 import {
@@ -13,11 +13,13 @@ import MyModal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAppSelector } from "../redux/hook/hook";
 const BookDetails = () => {
+  const { user } = useAppSelector((state) => state.auth);
   const { id } = useParams();
   const [commentText, setCommentText] = useState("");
   console.log(commentText);
-  const { data, error, isLoading } = useBookDetailsQuery(id as string, {
+  const { data, isLoading, isError } = useBookDetailsQuery(id as string, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
   });
@@ -25,13 +27,17 @@ const BookDetails = () => {
   const navigate = useNavigate();
   // eslint-disable-next-line prefer-const
   let [isOpen, setIsOpen] = useState(false);
-  const [addToReview, { data: datas, isSuccess }] = useAddBooCommentMutation();
+  const [addToReview, { isSuccess }] = useAddBooCommentMutation();
 
   function closeModal() {
     setIsOpen(false);
   }
   if (isLoading) {
     return <Spinner />;
+  }
+
+  if (isError) {
+    navigate("/");
   }
 
   if (isSuccess) {
@@ -83,39 +89,25 @@ const BookDetails = () => {
                         Date: {book?.publicationDate}
                       </p>
                     </div>
-                    <div className="flex flex-col-reverse mb-1 mr-4 group cursor-pointer">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 group-hover:opacity-70"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="gray"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                        />
-                      </svg>
-                    </div>
                   </div>
                 </div>
               </div>
-              <div className=" flex gap-5 px-16">
-                <button
-                  onClick={() => navigate(`/editBook/${book._id as string}`)}
-                  className="w-20 bg-slate-100 h-7 rounded text-center px-2"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => openModal()}
-                  className="w-20 bg-slate-100 h-7 rounded text-center px-2"
-                >
-                  delete
-                </button>
-              </div>
+              {user === book.userId && (
+                <div className=" flex gap-5 px-16">
+                  <button
+                    onClick={() => navigate(`/editBook/${book._id as string}`)}
+                    className="w-20 bg-slate-100 h-7 rounded text-center px-2"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => openModal()}
+                    className="w-20 bg-slate-100 h-7 rounded text-center px-2"
+                  >
+                    delete
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* <div className=" w-12"></div> */}

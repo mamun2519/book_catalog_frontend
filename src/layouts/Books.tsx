@@ -5,7 +5,7 @@ import { IBook } from "../types/interface";
 import Spinner from "../utils/Spinner";
 
 const Books = () => {
-  const { data, error, isLoading } = useGetALLBookQuery(undefined, {
+  const { data, isLoading } = useGetALLBookQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
   });

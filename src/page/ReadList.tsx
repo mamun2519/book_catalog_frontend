@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { useGetALLWishListQuery } from "../redux/features/wishlist/wishlistApi";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { useState } from "react";
+
 import {
   useDeleteReadListMutation,
   useGetALLreadListQuery,
@@ -8,20 +9,19 @@ import {
 import Spinner from "../utils/Spinner";
 import { ToastContainer, toast } from "react-toastify";
 import Navbar from "../layouts/Navbar";
-import { readList, wishList } from "../types/interface";
+import { readList } from "../types/interface";
 
 const ReadList = () => {
   const [readCheck, setReadCheck] = useState(false);
   const [completeCheck, setCompleteCheck] = useState(false);
   const [readSoon, setReadSoon] = useState(false);
 
-  const { data, isLoading, isSuccess } = useGetALLreadListQuery(undefined, {
+  const { data, isLoading } = useGetALLreadListQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
   });
 
-  const [deleteReadList, { isSuccess: success, isError }] =
-    useDeleteReadListMutation();
+  const [deleteReadList, { isSuccess: success }] = useDeleteReadListMutation();
   const [updateReadList, { isSuccess: upSuccess }] =
     useUpdateReadlistMutation();
 
