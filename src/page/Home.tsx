@@ -5,12 +5,12 @@ import Navbar from "../layouts/Navbar";
 
 const Home = () => {
   return (
-    <>
+    <div>
       <Navbar />
       <HeroSection />
       <Books />
       <Footer />
-    </>
+    </div>
   );
 };
 

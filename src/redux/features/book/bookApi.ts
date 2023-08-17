@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { IBook } from "../../../types/interface";
 import { api } from "../../api/apiSlice";
@@ -6,6 +7,12 @@ const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getALLBook: builder.query({
       query: () => "/books",
+    }),
+    getSearchedBooks: builder.query({
+      query: (query) => `/books/?${query}`,
+    }),
+    filterBooks: builder.query({
+      query: (query) => `/books/?${query}`,
     }),
     bookDetails: builder.query({
       query: (id: string) => `/books/${id}`,
@@ -50,4 +57,6 @@ export const {
   useEditBookMutation,
   useDeleteBookMutation,
   useAddBooCommentMutation,
+  useGetSearchedBooksQuery,
+  useFilterBooksQuery,
 } = bookApi;

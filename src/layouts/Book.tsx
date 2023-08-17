@@ -4,6 +4,7 @@ import { useAddWishlistMutation } from "../redux/features/wishlist/wishlistApi";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { AiFillRead } from "react-icons/ai";
+import { GiSelfLove } from "react-icons/gi";
 import { useAddReadlistMutation } from "../redux/features/readList/readList";
 import { useAppSelector } from "../redux/hook/hook";
 interface IProps {
@@ -50,7 +51,7 @@ const Book = ({ book }: IProps) => {
   };
   return (
     <div className="">
-      <div className="relative mx-3 flex flex-wrap justify-center">
+      <div className="relative mx-3 flex flex-wrap justify-center  h-96">
         <div className="relative max-w-sm min-w-[240px] bg-white shadow-md rounded-3xl p-2 mx-1 my-3 cursor-pointer">
           <div className="overflow-x-hidden rounded-2xl relative">
             <img
@@ -58,7 +59,7 @@ const Book = ({ book }: IProps) => {
               src={book?.picture?.url}
             />
           </div>
-          <div className="mt-4 pl-2 mb-2 flex justify-between ">
+          <div className="mt-4 pl-2 mb-2 flex justify-between h-32">
             <div>
               <p className="text-lg font-semibold text-gray-900 mb-0">
                 {book?.title}
@@ -75,20 +76,9 @@ const Book = ({ book }: IProps) => {
                 className="tooltip"
                 data-tip="Wishlist"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 group-hover:opacity-70"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="gray"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
+                <span className=" text-2xl text-red-500">
+                  <GiSelfLove></GiSelfLove>
+                </span>
               </div>
 
               <div
@@ -96,7 +86,7 @@ const Book = ({ book }: IProps) => {
                 className="h-6 w-6 group-hover:opacity-70 flex items-center tooltip"
                 data-tip="Readlist"
               >
-                <span className=" text-2xl">
+                <span className=" text-2xl text-green-700">
                   <AiFillRead />
                 </span>
               </div>
@@ -104,9 +94,11 @@ const Book = ({ book }: IProps) => {
           </div>
           <div
             onClick={() => navigate(`/bookDetails/${book._id as string}`)}
-            className=" w-full bg-slate-100 text-gray-900  font-medium h-8 text-center flex justify-center items-center mt-2 rounded-2xl"
+            className=" w-full bg-blue-600 text-white   font-medium h-8 text-center flex justify-center items-center mt-2 rounded-2xl"
           >
-            <button className=" ">Details</button>
+            <button className=" h-8 flex justify-center items-center ">
+              Details
+            </button>
           </div>
           <ToastContainer />
         </div>

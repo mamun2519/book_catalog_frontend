@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import Navbar from "../layouts/Navbar";
@@ -7,52 +9,34 @@ import { ChangeEvent, useState } from "react";
 import { useAddBookMutation } from "../redux/features/book/bookApi";
 import { ToastContainer, toast } from "react-toastify";
 import { useAppSelector } from "../redux/hook/hook";
+import { useNavigate } from "react-router-dom";
 
 const AddBook = () => {
-  const [productPicture, setProductPicture] = useState("");
-  const [addBook, { isSuccess }] = useAddBookMutation();
+  const [addBook, { data, isSuccess }] = useAddBookMutation();
+
   const { user } = useAppSelector((state) => state.auth);
 
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<IBook>();
   const onSubmit: SubmitHandler<IBook> = (data) => {
     const options: IBook = {
       ...data,
-      picture: {
-        url: productPicture,
-      },
-      userId: user,
+      userId: user as string | null,
     };
     void addBook(options);
-    console.log(data);
-  };
-  const productPictureHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target?.files;
-
-    if (!files || files.length === 0) {
-      // No file selected, handle the error or provide feedback to the user.
-      return;
-    }
-
-    const selectedFile = files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setProductPicture(reader.result as string);
-      }
-    };
-    // reader.readAsDataURL(e.target?.files[0] );
-    reader.readAsDataURL(selectedFile);
+    reset();
   };
 
-  if (isSuccess) {
+  if (data?.success) {
     toast.success("book add successfully");
+    // navigate("/");
   }
 
-  console.log(isSuccess);
+  console.log(data);
   return (
     <>
       <Navbar />
@@ -69,9 +53,9 @@ const AddBook = () => {
                         message: "picture is Required",
                       },
                     })}
-                    onChange={(e) => productPictureHandler(e)}
-                    type="file"
-                    className="file-input file-input-bordered  text-sm sm:text-base placeholder-gray-500   rounded-lg border border-gray-400 w-full  focus:outline-none focus:border-blue-400"
+                    placeholder="Enter Your Pic Url"
+                    type="text"
+                    className="file-input file-input-bordered  text-sm sm:text-base placeholder-gray-500   rounded-lg border border-gray-400 w-full  focus:outline-none focus:border-blue-400 px-6"
                   />
                   <label className="label">
                     {errors.picture?.type === "required" && (

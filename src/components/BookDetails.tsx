@@ -63,7 +63,7 @@ const BookDetails = () => {
     <div>
       <Navbar />
       <div className="px-4">
-        <div className="card m-auto  h-[70vh] max-w-7xl border mt-20">
+        <div className="card m-auto  bg-white h-[70vh] max-w-7xl border mt-20">
           <div className=" grid lg:grid-cols-2  grid-cols-1 mt-10 lg:gap-5 gap-20 ">
             <div className="">
               <div className="relative  flex flex-wrap justify-center">
@@ -89,30 +89,32 @@ const BookDetails = () => {
                         Date: {book?.publicationDate}
                       </p>
                     </div>
+                    {user === book.userId && (
+                      <div className=" flex   gap-5  px-3 items-end">
+                        <button
+                          onClick={() =>
+                            navigate(`/editBook/${book._id as string}`)
+                          }
+                          className="w-20 bg-blue-500 text-white h-7 rounded text-center px-2"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => openModal()}
+                          className="w-20 bg-red-500  text-white  font-medium h-7 rounded text-center px-2"
+                        >
+                          delete
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
-              {user === book.userId && (
-                <div className=" flex gap-5 px-16">
-                  <button
-                    onClick={() => navigate(`/editBook/${book._id as string}`)}
-                    className="w-20 bg-slate-100 h-7 rounded text-center px-2"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => openModal()}
-                    className="w-20 bg-slate-100 h-7 rounded text-center px-2"
-                  >
-                    delete
-                  </button>
-                </div>
-              )}
             </div>
 
             {/* <div className=" w-12"></div> */}
             <div className="pt-6 lg:pl-20 lg:pr-5">
-              <div className=" h-96  overflow-y-scroll w-full">
+              <div className=" h-80 border-l border-gray-200  overflow-y-scroll w-full px-4">
                 <p>Reviews</p>
 
                 <div>
@@ -166,7 +168,9 @@ const BookDetails = () => {
                     onClick={() => addReview()}
                     className=" w-full bg-slate-100 h-10 text-center rounded-2xl flex  justify-center items-center"
                   >
-                    <button>Add Comment</button>
+                    <button className=" bg-blue-600 w-full py-2 rounded-lg text-white">
+                      Add Comment
+                    </button>
                   </div>
                 </div>
               </div>

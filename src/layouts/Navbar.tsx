@@ -8,11 +8,6 @@ import { singOut } from "../redux/features/auth/authSlice";
 import { AiFillRead } from "react-icons/ai";
 
 const Navbar = () => {
-  // const [searchText, setSearchText] = useState("");
-  // const { data, error, isLoading } = useGetALLBookQuery(searchText, {
-  //   refetchOnMountOrArgChange: true,
-  //   pollingInterval: 30000,
-  // });
   const navigation = [
     { name: "Home", to: "/", current: true },
     { name: "Add Book", to: "/addBook", current: false },
@@ -23,17 +18,10 @@ const Navbar = () => {
   }
   const { user } = useAppSelector((state) => state.auth);
   const disPatch = useAppDispatch();
-  // const { data, isLoading, isSuccess } = useGetALLWishListQuery(
-  //   user as string,
-  //   {
-  //     refetchOnMountOrArgChange: true,
-  //     pollingInterval: 30000,
-  //   }
-  // );
 
   return (
-    <div className="h-32 bg-gray-800 ">
-      <div className="m-auto max-w-7xl">
+    <div className="h-20 bg-gray-800 ">
+      <div className="m-auto  w-[80vw]">
         <Disclosure as="nav" className="">
           {({ open }) => (
             <>
@@ -236,15 +224,6 @@ const Navbar = () => {
             </>
           )}
         </Disclosure>
-
-        <div>
-          <input
-            id="email"
-            type="text"
-            className="text-sm h-10 sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
-            placeholder="Search Book"
-          />
-        </div>
       </div>
     </div>
   );

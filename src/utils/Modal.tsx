@@ -14,17 +14,20 @@ export default function MyModal({
   closeModal,
   id,
 }: any) {
-  const [deleteBook, { isSuccess }] = useDeleteBookMutation();
+  const [deleteBook, { isSuccess, data }] = useDeleteBookMutation();
   const navigate = useNavigate();
 
   const deletedBookHandler = () => {
     void deleteBook(id as string);
+    toast.success("Delete Successfully");
     closeModal();
   };
 
+  console.log(data);
+
   if (isSuccess) {
     toast.success("Delete Successfully");
-    navigate("/");
+    // navigate("/");
   }
   return (
     <>

@@ -24,7 +24,7 @@ const readListApi = api.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["updateList"],
+      invalidatesTags: ["updateList", "readList"],
     }),
 
     deleteReadList: builder.mutation({
@@ -32,7 +32,7 @@ const readListApi = api.injectEndpoints({
         url: `/readList/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["readList"],
+      invalidatesTags: ["readList", "updateList"],
     }),
   }),
 });

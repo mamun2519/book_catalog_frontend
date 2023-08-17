@@ -2,7 +2,7 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 const HeroSection = () => {
   return (
-    <div className=" mx-auto  max-w-7xl ">
+    <div className=" mx-auto  w-[80vw] ">
       <Carousel>
         <div>
           <img src="https://wafilife-media.wafilife.com/uploads/2023/03/lifestyle_desktop-min-1.png" />

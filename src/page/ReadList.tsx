@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useState } from "react";
 
 import {
   useDeleteReadListMutation,
@@ -12,23 +11,20 @@ import Navbar from "../layouts/Navbar";
 import { readList } from "../types/interface";
 
 const ReadList = () => {
-  const [readCheck, setReadCheck] = useState(false);
-  const [completeCheck, setCompleteCheck] = useState(false);
-  const [readSoon, setReadSoon] = useState(false);
-
   const { data, isLoading } = useGetALLreadListQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
   });
 
-  const [deleteReadList, { isSuccess: success }] = useDeleteReadListMutation();
-  const [updateReadList, { isSuccess: upSuccess }] =
+  const [deleteReadList, { isSuccess: success, isLoading: deleteLoading }] =
+    useDeleteReadListMutation();
+  const [updateReadList, { isSuccess: upSuccess, isLoading: UpdateLoading }] =
     useUpdateReadlistMutation();
 
   const wishListDeleteHandler = (id: string) => {
     void deleteReadList(id);
   };
-  if (isLoading) {
+  if (deleteLoading || UpdateLoading || isLoading) {
     return <Spinner />;
   }
   if (success) {
@@ -37,34 +33,37 @@ const ReadList = () => {
   if (upSuccess) {
     toast.success("Update successfully");
   }
-  const readListChangeHendler = (id: string) => {
-    setReadCheck(!readCheck);
+  const readListChangeHendler = (id: string, value: boolean) => {
     const options = {
       id: id,
       data: {
-        reading: readCheck,
+        reading: value,
+        readSoon: false,
+        complete: false,
       },
     };
     void updateReadList(options);
   };
 
-  const readSoonHandler = (id: string) => {
-    setReadSoon(!readSoon);
+  const readSoonHandler = (id: string, value: boolean) => {
     const options = {
       id: id,
       data: {
-        readSoon: readSoon,
+        reading: false,
+        readSoon: value,
+        complete: false,
       },
     };
     void updateReadList(options);
   };
 
-  const completeListChangeHandler = (id: string) => {
-    setCompleteCheck(!completeCheck);
+  const completeListChangeHandler = (id: string, value: boolean) => {
     const options = {
       id: id,
       data: {
-        complete: completeCheck,
+        reading: false,
+        readSoon: false,
+        complete: value,
       },
     };
     void updateReadList(options);
@@ -113,11 +112,14 @@ const ReadList = () => {
                                 <div className=" flex items-center gap-2">
                                   <input
                                     type="checkbox"
-                                    className="checkbox "
-                                    checked={review?.reading}
+                                    className="checkbox checkbox-xs"
                                     onClick={() =>
-                                      readListChangeHendler(review?._id)
+                                      readListChangeHendler(
+                                        review?._id,
+                                        !review.readSoon
+                                      )
                                     }
+                                    checked={review?.reading}
                                   />
                                   <span>Read Soon</span>
                                 </div>
@@ -126,10 +128,13 @@ const ReadList = () => {
                                 <div className=" flex items-center gap-2">
                                   <input
                                     type="checkbox"
-                                    className="checkbox  "
+                                    className="checkbox  checkbox-xs"
                                     checked={review?.complete}
                                     onClick={() =>
-                                      completeListChangeHandler(review?._id)
+                                      completeListChangeHandler(
+                                        review?._id,
+                                        !review.complete
+                                      )
                                     }
                                   />
                                   <span>currently reading</span>
@@ -139,9 +144,14 @@ const ReadList = () => {
                                 <div className=" flex items-center gap-2">
                                   <input
                                     type="checkbox"
-                                    className="checkbox "
+                                    className="checkbox checkbox-xs"
                                     checked={review?.readSoon}
-                                    onClick={() => readSoonHandler(review?._id)}
+                                    onClick={() =>
+                                      readSoonHandler(
+                                        review?._id,
+                                        !review.reading
+                                      )
+                                    }
                                   />
                                   <span>finished reading</span>
                                 </div>

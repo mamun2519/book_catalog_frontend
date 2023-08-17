@@ -9,28 +9,41 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginFromData } from "../types/interface";
 import { useSingInMutation } from "../redux/features/auth/authApi";
 import Spinner from "../utils/Spinner";
+import { useAppDispatch } from "../redux/hook/hook";
+import { ToastContainer, toast } from "react-toastify";
+import { setUser } from "../redux/features/auth/authSlice";
+import { useEffect } from "react";
 
 const SingIn = () => {
   const navigate = useNavigate();
-  const [singIn, { data, isSuccess, isLoading, isError }] = useSingInMutation();
-  console.log("is eror", isError);
-  console.log(data);
+  const dispatch = useAppDispatch();
+  const [singIn, { data, isSuccess, isLoading, isError, error }] =
+    useSingInMutation();
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<LoginFromData>();
   const onSubmit: SubmitHandler<LoginFromData> = (data) => {
-    console.log(data);
     void singIn(data);
   };
-  if (isSuccess) {
-    navigate("/");
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-    localStorage.setItem("UserId", data?.data?.userId);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-    localStorage.setItem("UserToken", data?.data?.accessToken);
-  }
+  useEffect(() => {
+    if (data?.success) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
+      toast.success("User Login Success");
+      localStorage.setItem("UserId", data?.data?.userId);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
+      localStorage.setItem("UserToken", data?.data?.accessToken);
+      dispatch(
+        setUser({ user: data?.data?.userId, token: data?.data?.accessToken })
+      );
+      navigate("/");
+    } else if (!error?.data?.success) {
+      toast.error(error?.data?.message);
+    }
+  }, [isSuccess, error]);
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -50,6 +63,7 @@ const SingIn = () => {
                 </label>
                 <div className="relative">
                   <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                    <ToastContainer />
                     <svg
                       className="h-6 w-6"
                       fill="none"

@@ -22,12 +22,13 @@ const WishList = () => {
     pollingInterval: 30000,
   });
 
-  const [deleteWishList, { isSuccess: success }] = useDeleteWishListMutation();
+  const [deleteWishList, { isSuccess: success, isLoading: loading }] =
+    useDeleteWishListMutation();
 
   const wishListDeleteHandler = (id: string) => {
     void deleteWishList(id);
   };
-  if (isLoading) {
+  if (loading) {
     return <Spinner />;
   }
   if (success) {
@@ -77,7 +78,7 @@ const WishList = () => {
                             onClick={() => wishListDeleteHandler(review?._id)}
                             className="flex justify-center items-center col-start-2 ml-4 md:col-start-auto md:ml-0 md:justify-end cursor-pointer"
                           >
-                            <p className="rounded-lg text-red-500 font-bold bg-red-100  py-1 px-3 text-sm w-fit h-fit">
+                            <p className="rounded-lg text-red-500 font-bold bg-red-100  py-1 px-5 text-sm w-fit h-fit">
                               Delete
                             </p>
                           </div>

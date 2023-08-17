@@ -1,29 +1,70 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../layouts/Navbar";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SingUpFromData } from "../types/interface";
 import { useSingUpUserMutation } from "../redux/features/auth/authApi";
 import Spinner from "../utils/Spinner";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import { ToastContainer, toast } from "react-toastify";
+import { useAppDispatch } from "../redux/hook/hook";
+import { setUser } from "../redux/features/auth/authSlice";
 
 const Singup = () => {
   const navigate = useNavigate();
 
-  const [productPicture, setProductPicture] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-  // const from = location?.state?.from?.pathname || "/";
-  const [SingUp, { isSuccess, data, isLoading }] = useSingUpUserMutation();
+  const [errorMessage, setErrorMessage] = useState("");
+  type CustomError = FetchBaseQueryError & {
+    data: {
+      success: boolean;
+      message: string;
+      errorMessages: [];
+    };
+  };
+
+  const dispatch = useAppDispatch();
+
+  const [SingUp, { isSuccess, data, isLoading, error, isError }] =
+    useSingUpUserMutation();
+
+  useEffect(() => {
+    if (isError && error) {
+      const customError = error as CustomError;
+      if (customError.data) {
+        setErrorMessage(customError.data.message);
+      }
+    }
+  }, [isError, error]);
+  useEffect(() => {
+    if (isSuccess && data) {
+      localStorage.setItem("UserId", data?.data?.userId);
+      //     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      localStorage.setItem("UserToken", data?.data?.accessToken);
+
+      dispatch(
+        setUser({ user: data?.data?.userId, token: data?.data?.accessToken })
+      );
+    }
+  }, [isSuccess]);
   console.log(data);
-  if (isSuccess) {
-    navigate("/");
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    localStorage.setItem("UserId", data?.data?.userId);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    localStorage.setItem("UserToken", data?.data?.accessToken);
-  }
+  useEffect(() => {
+    if (data?.success && !isLoading) {
+      navigate("/");
+    }
+  }, [isSuccess, isLoading]);
+
+  useEffect(() => {
+    if (data?.success) {
+      toast.success("User Create Successfully");
+    } else {
+      toast.error(data?.message);
+    }
+  }, [data?.success, isSuccess, isLoading]);
+
   const {
     register,
     formState: { errors },
@@ -32,29 +73,9 @@ const Singup = () => {
   const onSubmit: SubmitHandler<SingUpFromData> = (data) => {
     const options: SingUpFromData = {
       ...data,
-      picture: {
-        url: productPicture,
-      },
     };
     console.log(data);
     void SingUp(options);
-  };
-  const productPictureHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target?.files;
-
-    if (!files || files.length === 0) {
-      // No file selected, handle the error or provide feedback to the user.
-      return;
-    }
-    const selectedFile = files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setProductPicture(reader.result as string);
-      }
-    };
-    // reader.readAsDataURL(e.target.files[0]);
-    reader.readAsDataURL(selectedFile);
   };
 
   if (isLoading) {
@@ -80,11 +101,10 @@ const Singup = () => {
                       {...register("picture", {
                         required: {
                           value: true,
-                          message: "picture is Required",
+                          message: "Avater Url is Required",
                         },
                       })}
-                      onChange={(e) => productPictureHandler(e)}
-                      type="file"
+                      type="text"
                       className="file-input file-input-bordered  text-sm sm:text-base placeholder-gray-500   rounded-lg border border-gray-400 w-full  focus:outline-none focus:border-blue-400"
                     />
                     <label className="label">
@@ -95,6 +115,7 @@ const Singup = () => {
                       )}
                     </label>
                   </div>
+                  <ToastContainer />
                 </div>
                 <div className="flex flex-col mb-6">
                   <label

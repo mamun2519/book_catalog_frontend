@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../layouts/Navbar";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { IBook } from "../types/interface";
@@ -9,6 +9,7 @@ import {
   useBookDetailsQuery,
   useEditBookMutation,
 } from "../redux/features/book/bookApi";
+import { ToastContainer, toast } from "react-toastify";
 
 const EditBook = () => {
   const { id } = useParams();
@@ -25,6 +26,7 @@ const EditBook = () => {
   const {
     register,
     formState: { errors },
+    reset,
     handleSubmit,
   } = useForm<IBook>({
     defaultValues: {
@@ -44,7 +46,12 @@ const EditBook = () => {
 
     void editBook(options);
     console.log(options);
+    // reset();
   };
+
+  if (isSuccess) {
+    toast.success("Update Successfully");
+  }
 
   return (
     <div>
@@ -52,6 +59,7 @@ const EditBook = () => {
 
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-300">
         <div className="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-md w-full max-w-md">
+          <ToastContainer />
           <div className="mt-10">
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* <div className="flex flex-col mb-6">

@@ -49,3 +49,9 @@ export type readList = {
   complete: boolean;
   readSoon: boolean;
 };
+
+export interface ICredential {
+  user: string | null;
+  token: string | null;
+  password?: string | null;
+}
