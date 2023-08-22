@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hook/hook";
 import { singOut } from "../redux/features/auth/authSlice";
 
 import { AiFillRead } from "react-icons/ai";
+import { GiSelfLove } from "react-icons/gi";
 
 const Navbar = () => {
   const navigation = [
@@ -20,7 +21,7 @@ const Navbar = () => {
   const disPatch = useAppDispatch();
 
   return (
-    <div className="h-20 bg-gray-800 ">
+    <div className="bg-gray-500 ">
       <div className="m-auto  w-[80vw]">
         <Disclosure as="nav" className="">
           {({ open }) => (
@@ -46,11 +47,9 @@ const Navbar = () => {
                   </div>
                   <div className="lg:flex px-12 lg:px-0  flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div className="">
-                      <img
-                        className="h-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
-                      />
+                      <p className=" font-medim mt-1 text-xl text-white font-bold">
+                        Book Catalog
+                      </p>
                     </div>
                     <div className="hidden sm:ml-6 sm:block">
                       <div className="flex space-x-4">
@@ -61,7 +60,7 @@ const Navbar = () => {
                             className={classNames(
                               item.current
                                 ? "bg-gray-900 text-white"
-                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                : "text-white font-medium hover:bg-gray-700 hover:text-white",
                               "rounded-md px-3 py-2 text-sm font-medium"
                             )}
                             aria-current={item.current ? "page" : undefined}
@@ -83,7 +82,7 @@ const Navbar = () => {
                                 active
                                   ? "bg-gray-700 rounded-md  cursor-pointer"
                                   : "",
-                                "block px-4 py-2 text-sm text-white"
+                                "block px-4 py-2 text-sm text-white font-medium"
                               )}
                             >
                               SingOut
@@ -97,7 +96,7 @@ const Navbar = () => {
                               to="/singIn"
                               className={classNames(
                                 active ? "bg-gray-700 rounded-md" : "",
-                                "block px-4 py-2 text-sm text-white"
+                                "block px-4 py-2 text-sm text-white font-medium"
                               )}
                             >
                               Sign In
@@ -108,7 +107,7 @@ const Navbar = () => {
                     </Menu>
                     <button
                       type="button"
-                      className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                      className="rounded-full text-white p-1 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                     >
                       <span className="sr-only">View notifications</span>
 
@@ -117,7 +116,7 @@ const Navbar = () => {
                           to="/readList"
                           className="h-6 w-6 group-hover:opacity-70  mt-"
                         >
-                          <span className=" text-3xl">
+                          <span className=" text-3xl text-white">
                             <AiFillRead />
                           </span>
                         </Link>
@@ -127,20 +126,9 @@ const Navbar = () => {
                           className="flex flex-col-reverse  group cursor-pointer"
                           data-tip="Wishlist"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-8 w-8 group-hover:opacity-70"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="gray"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                            />
-                          </svg>
+                          <span className=" text-3xl text-white ">
+                            <GiSelfLove></GiSelfLove>
+                          </span>
                         </Link>
                       </div>
                     </button>
@@ -152,7 +140,7 @@ const Navbar = () => {
                           <span className="sr-only">Open user menu</span>
                           <img
                             className="h-8 w-8 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            src="https://img.freepik.com/free-icon/user_318-159711.jpg"
                             alt=""
                           />
                         </Menu.Button>
@@ -210,8 +198,8 @@ const Navbar = () => {
                       href={item.to}
                       className={classNames(
                         item.current
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          ? "bg-black-900 text-white"
+                          : "text-gray-800 hover:bg-gray-700 hover:text-white",
                         "block rounded-md px-3 py-2 text-base font-medium"
                       )}
                       aria-current={item.current ? "page" : undefined}

@@ -25,6 +25,7 @@ const AddBook = () => {
   const onSubmit: SubmitHandler<IBook> = (data) => {
     const options: IBook = {
       ...data,
+      year: new Date(data.publicationDate).getFullYear(),
       userId: user as string | null,
     };
     void addBook(options);

@@ -16,7 +16,6 @@ const WishList = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [user] = useState("");
 
-  console.log(user);
   const { data, isLoading } = useGetALLWishListQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
@@ -34,7 +33,7 @@ const WishList = () => {
   if (success) {
     toast.success("Delete successfully");
   }
-
+  console.log(data);
   return (
     <div>
       <Navbar />

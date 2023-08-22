@@ -13,26 +13,26 @@ import Spinner from "../utils/Spinner";
 import { ChangeEvent, useState } from "react";
 
 const Books = () => {
-  // const { data, isLoading } = useGetALLBookQuery(undefined, {
-  //   refetchOnMountOrArgChange: true,
-  //   pollingInterval: 30000,
-  // });
   let userData = null;
   const [searchText, setSearchText] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const { data, isLoading } = useGetSearchedBooksQuery(
-    `searchTerm=${searchText}`
+    `searchTerm=${searchText}`,
+    {
+      refetchOnMountOrArgChange: true,
+      pollingInterval: 30000,
+    }
   );
   const { data: filterdata, isLoading: filterLoading } = useFilterBooksQuery(
-    `genre=${selectedOption}&year=${selectedYear}`
+    `genre=${selectedOption}&year=${selectedYear}`,
+    {
+      refetchOnMountOrArgChange: true,
+      pollingInterval: 30000,
+    }
   );
-  const book: IBook[] = data?.data;
 
-  if (isLoading) {
-    return <Spinner />;
-  }
   userData = data;
 
   if (selectedOption && selectedYear) {
@@ -49,9 +49,13 @@ const Books = () => {
   const handleSelectYearChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(e.target.value);
   };
+  if (isLoading || filterLoading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="  lg:flex m-auto   w-[80vw] gap-5 mt-10">
-      <div className="w-96">
+      <div className="">
         <div className="mt-5">
           <h1>Searching</h1>
           <div>
@@ -59,7 +63,7 @@ const Books = () => {
               id="email"
               type="text"
               onChange={handleSearch}
-              className="text-sm h-10 sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+              className="input input-bordered w-full mt-2"
               placeholder="Search (title, author, genre)"
             />
             <div className="mt-3 flex justify-around">

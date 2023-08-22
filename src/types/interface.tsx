@@ -9,6 +9,7 @@ export interface IBook {
   };
   reviews?: [];
   userId: string | null;
+  year: string | null | number;
 }
 
 export type LoginFromData = {

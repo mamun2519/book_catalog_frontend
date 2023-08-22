@@ -4,7 +4,14 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 export const api = createApi({
   reducerPath: "api",
-  tagTypes: ["deleteBook", "review", "wishList", "readList", "updateList"],
+  tagTypes: [
+    "deleteBook",
+    "review",
+    "wishList",
+    "readList",
+    "updateList",
+    "books",
+  ],
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:5000/api/v1",
     // baseUrl: "http://localhost:5000/api/v1",

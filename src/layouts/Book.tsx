@@ -49,6 +49,7 @@ const Book = ({ book }: IProps) => {
       void addReadList(options);
     }
   };
+  console.log(book);
   return (
     <div className="">
       <div className="relative mx-3 flex flex-wrap justify-center  h-96">
